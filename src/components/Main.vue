@@ -1,8 +1,22 @@
 <template>
     <div>
+                <!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- The Close Button -->
+  <div class="text-center">
+      <b-button class="close" style="font-weight: 100; opacity: 1; float: initial; padding: 10px; border: none; border-radius: 20px; background-color: #5a6268; color: #fff;">Close Image</b-button>
+  </div>
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img01">
+
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption"></div>
+</div>
         <b-row class="text-center container-fluid mx-auto pb-3">
             <b-col class="text-left">
-                <div @click="show_card = true" style="cursor: pointer;" v-if="!show_card">
+                <div @click="display_card()" style="cursor: pointer;" v-if="!show_card">
                     <img src="../assets/7.png" style="width: 12%;" alt="">
                     <a href="#" class="ml-2" style="text-decoration: none; color: #E39400;">Show Card</a>
                 </div>
@@ -31,7 +45,8 @@
                 >
                     <header @click="hide_card()" class="card-header px-0">Hide</header>
                     <div class="text-center">
-                        <img src="../assets/8.png" style="width: 35%;" alt="">
+                        <img id="myImg" src="../assets/8.png" style="width: 35%; cursor: pointer;" alt="">
+                        <!-- <img src="../assets/7.png" style="width: 12%;" alt=""> -->
                     </div>
                     <h3 class="card-text text-center mt-2" style="font-weight: bold;">Ekemini Mark</h3>
                     <p class="text-center">I’m a wedding and portrait photographer based in Lagos, Nigeria. 
@@ -84,7 +99,7 @@
                             </b-row>
                         </b-col>
                         <b-col cols="5">
-                            <b-button style="border: none; border-radius: 20px; background-color: #F29F05; color: #fff;" href="#">Book Now</b-button>
+                            <b-button style="border: none; border-radius: 20px; background-color: #F29F05; color: #fff;">Book Now</b-button>
                         </b-col>
                     </b-row>
                 </b-card>
@@ -179,7 +194,7 @@
                                     <td aria-colindex="1" role="cell" class=""></td>
                                     <td aria-colindex="1" role="cell" class=""></td>
                                     <td aria-colindex="1" role="cell" class="" style="font-weight: bold;">
-                                        <b-button style="border: none; border-radius: 20px; background-color: #F29F05; color: #fff;" href="#">Select Package</b-button>
+                                        <b-button style="border: none; border-radius: 20px; background-color: #F29F05; color: #fff;">Select Package</b-button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -217,6 +232,33 @@ export default {
         }
     },
     methods: {
+        display_card() {
+            let _this = this;
+            _this.show_card = true;
+            setTimeout(() => {
+                // Get the modal
+                var modal = document.getElementById("myModal");
+
+                // Get the image and insert it inside the modal - use its "alt" text as a caption
+                var img = document.getElementById("myImg");
+                var modalImg = document.getElementById("img01");
+                var captionText = document.getElementById("caption");
+                img.onclick = function(e){
+                    e.preventDefault()
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                    captionText.innerHTML = this.alt;
+                }
+
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+            }, 300);
+        },
         dateClass(ymd, date) {
             const day = date.getDate()
             return day >= 10 && day <= 20 ? 'table-info' : ''
@@ -248,6 +290,80 @@ export default {
 }
 </script>
 
+<style scoped>
+/* Style the Image Used to Trigger the Modal */
+#myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 60px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 300px;
+    margin-top: 60px;
+    border-radius: 100%;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  top: 5px;
+  color: #f1f1f1;
+  font-size: 15px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
 <style>
 .btn-outline-warning {
     color: #f19f27 !important;
