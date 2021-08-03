@@ -39,7 +39,7 @@
             </b-col>
         </b-row>
         <b-row>
-            <b-col v-if="show_card" cols="4" :style="fixed ? 'position: fixed; top: 3%; padding: 0 25px;' : 'position: relative; top: -230px; left: 15px;'">
+            <b-col v-if="show_card" cols="4" :style="fixed ? 'position: fixed; top: 3%; padding: 0 25px;' : !fixed && tab == 0 ? 'position: relative; top: -253px; left: 15px;' : 'position: relative; top: -216px; left: 15px;'">
                 <b-card
                 class="show-card"
                 >
@@ -107,7 +107,8 @@
             <b-col :cols="show_card ? '8' : '12'" :offset="fixed ? '4' : ''">
                 <b-row v-if="tab == 0" class="text-center container-fluid mx-auto pt-4">
                     <b-col v-for="n in 9" :key="n" cols="4" style="padding-right: 5px; padding-left: 5px; padding-bottom: 10px;">
-                        <img class="img-fluid big-0-image" src="../assets/2.jpg" alt="">
+                        <img v-if="n % 2 == 0" class="img-fluid big-0-image" src="../assets/2.jpg" alt="">
+                        <img v-else class="img-fluid big-0-image" src="../assets/3.jpg" alt="">
                     </b-col>
                 </b-row>
                 <b-row v-if="tab == 1" :class="show_card ? '' : 'text-center '" class="container-fluid mx-auto pt-4">
