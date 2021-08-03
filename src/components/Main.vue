@@ -1,19 +1,49 @@
 <template>
     <div>
-                <!-- The Modal -->
-<div id="myModal" class="modal">
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
 
-  <!-- The Close Button -->
-  <div class="text-center">
-      <b-button class="close" style="font-weight: 100; opacity: 1; float: initial; padding: 10px; border: none; border-radius: 20px; background-color: #5a6268; color: #fff;">Close Image</b-button>
-  </div>
+            <!-- The Close Button -->
+            <div class="text-center">
+                <b-button class="close" style="font-weight: 100; opacity: 1; float: initial; padding: 10px; border: none; border-radius: 20px; background-color: #5a6268; color: #fff;">Close Image</b-button>
+            </div>
 
-  <!-- Modal Content (The Image) -->
-  <img class="modal-content" id="img01">
+            <!-- Modal Content (The Image) -->
+            <img class="modal-content" id="img01">
 
-  <!-- Modal Caption (Image Text) -->
-  <div id="caption"></div>
-</div>
+            <!-- Modal Caption (Image Text) -->
+            <div id="caption"></div>
+        </div>
+        <!-- The Modal -->
+        <div id="myModal2" class="modal-2">
+
+            <!-- The Close Button -->
+            <div class="text-center">
+                <b-button class="close" style="font-weight: 100; opacity: 1; float: initial; padding: 10px; border: none; border-radius: 20px; background-color: #5a6268; color: #fff;">Close Slider</b-button>
+            </div>
+
+            <!-- Modal Content (The Slider) -->
+            <div class="modal-content-2" id="slider">
+                <splide
+                :options="primaryOptions"
+                ref="primary"
+                >
+                <splide-slide v-for="slide in slides" :key="slide.src">
+                    <img :src="slide.src" alt="slide.alt">
+                </splide-slide>
+                </splide>
+
+                <splide
+                :options="secondaryOptions"
+                ref="secondary"
+                >
+                <splide-slide v-for="slide in slides" :key="slide.src">
+                    <img :src="slide.src" alt="slide.alt">
+                </splide-slide>
+                </splide>
+            </div>
+        </div>
+
         <b-row class="text-center container-fluid mx-auto pb-3">
             <b-col class="text-left">
                 <div @click="display_card()" style="cursor: pointer;" v-if="!show_card">
@@ -106,7 +136,7 @@
             </b-col>
             <b-col :cols="show_card ? '8' : '12'" :offset="fixed ? '4' : ''">
                 <b-row v-if="tab == 0" class="text-center container-fluid mx-auto pt-4">
-                    <b-col v-for="n in 9" :key="n" cols="4" style="padding-right: 5px; padding-left: 5px; padding-bottom: 10px;">
+                    <b-col @click="launch_slider()" v-for="n in 9" :key="n" cols="4" style="padding-right: 5px; padding-left: 5px; padding-bottom: 10px; cursor: pointer;">
                         <img v-if="n % 2 == 0" class="img-fluid big-0-image" src="../assets/2.jpg" alt="">
                         <img v-else class="img-fluid big-0-image" src="../assets/3.jpg" alt="">
                     </b-col>
@@ -212,7 +242,14 @@
 
 <script>
 // import $ from 'jquery';
+import { Splide, SplideSlide } from '@splidejs/vue-splide';
+import { createSlides } from '../assets/slides';
+import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 export default {
+    components: {
+      Splide,
+      SplideSlide
+    },
     data() {
         return {
             tab: 0,
@@ -229,10 +266,44 @@ export default {
             ],
             selected: null,
             service_chosen: false,
-            value: ''
+            value: '',
+            primaryOptions: {
+                type: 'loop',
+                perPage: 1,
+                perMove: 1,
+                gap: '1rem',
+                pagination: false,
+            },
+            secondaryOptions: {
+                type: 'slide',
+                rewind: true,
+                gap: '1rem',
+                pagination: false,
+                fixedWidth: 110,
+                fixedHeight: 70,
+                cover: true,
+                focus: 'center',
+                isNavigation: true,
+                updateOnMove: true,
+            },
+            count : 0
         }
     },
     methods: {
+        launch_slider() {
+            // Get the modal
+            var modal2 = document.getElementById("myModal2");
+
+            modal2.style.display = "block";
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[1];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal2.style.display = "none";
+            }
+        },
         display_card() {
             let _this = this;
             _this.show_card = true;
@@ -275,6 +346,11 @@ export default {
             _this.fixed = false;
         }
     },
+    computed: {
+      slides() {
+        return createSlides()
+      },
+    },
     mounted() {
         let _this = this;
         document.addEventListener('scroll', function() {
@@ -287,6 +363,8 @@ export default {
                 }
             }
         })
+
+        _this.$refs.primary.sync( this.$refs.secondary.splide );
     }
 }
 </script>
@@ -316,6 +394,20 @@ export default {
   background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
 }
 
+.modal-2 {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 60px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
 /* Modal Content (Image) */
 .modal-content {
     margin: auto;
@@ -324,6 +416,13 @@ export default {
     max-width: 300px;
     margin-top: 60px;
     border-radius: 100%;
+}
+.modal-content-2 {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 300px;
+    margin-top: 30px;
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
@@ -339,7 +438,7 @@ export default {
 }
 
 /* Add Animation - Zoom in the Modal */
-.modal-content, #caption {
+.modal-content, .modal-content-2, #caption {
   animation-name: zoom;
   animation-duration: 0.6s;
 }
@@ -366,6 +465,20 @@ export default {
 }
 </style>
 <style>
+.splide--nav>.splide__track>.splide__list>.splide__slide.is-active {
+    border-color: #f19f27;
+    border-radius: 20px;
+}
+.splide--nav>.splide__track>.splide__list>.splide__slide {
+    border-radius: 20px;
+}
+div#splide02-track {
+    overflow: visible !important;
+    padding-top: 10px !important;
+}
+.splide button {
+    display: none;
+}
 .btn-outline-warning {
     color: #f19f27 !important;
 }

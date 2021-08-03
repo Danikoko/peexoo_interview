@@ -1,54 +1,77 @@
 <template>
   <div>
-    <b-alert show>Default Alert</b-alert>
+    <h2>Thumbnail Slider</h2>
 
-    <b-alert variant="success" show>Success Alert</b-alert>
+    <div class="description">
+      <a
+        href="https://github.com/Splidejs/vue-splide/blob/master/examples/src/js/examples/components/ThumbnailsExample.vue"
+        target="_blank"
+        rel="noopener"
+      >
+        View Code
+      </a>
+    </div>
 
-    <b-alert v-model="showDismissibleAlert" variant="danger" dismissible>
-      Dismissible Alert!
-    </b-alert>
-
-    <b-alert
-      :show="dismissCountDown"
-      dismissible
-      variant="warning"
-      @dismissed="dismissCountDown=0"
-      @dismiss-count-down="countDownChanged"
+    <splide
+      :options="primaryOptions"
+      ref="primary"
     >
-      <p>This alert will dismiss after {{ dismissCountDown }} seconds...</p>
-      <b-progress
-        variant="warning"
-        :max="dismissSecs"
-        :value="dismissCountDown"
-        height="4px"
-      ></b-progress>
-    </b-alert>
+      <splide-slide v-for="slide in slides" :key="slide.src">
+        <img :src="slide.src" alt="slide.alt">
+      </splide-slide>
+    </splide>
 
-    <b-button @click="showAlert" variant="info" class="m-1">
-      Show alert with count-down timer
-    </b-button>
-    <b-button @click="showDismissibleAlert=true" variant="info" class="m-1">
-      Show dismissible alert ({{ showDismissibleAlert ? 'visible' : 'hidden' }})
-    </b-button>
+    <splide
+      :options="secondaryOptions"
+      ref="secondary"
+    >
+      <splide-slide v-for="slide in slides" :key="slide.src">
+        <img :src="slide.src" alt="slide.alt">
+      </splide-slide>
+    </splide>
   </div>
 </template>
 
 <script>
+  import { Splide, SplideSlide } from '@splidejs/vue-splide';
+  import { createSlides } from '../assets/slides';
+  import '@splidejs/splide/dist/css/themes/splide-default.min.css';
   export default {
+    components: {
+      Splide,
+      SplideSlide
+    },
     data() {
       return {
-        dismissSecs: 10,
-        dismissCountDown: 0,
-        showDismissibleAlert: false
+        primaryOptions: {
+          type: 'loop',
+          perPage: 1,
+          perMove: 1,
+          gap: '1rem',
+          pagination: false,
+        },
+        secondaryOptions: {
+          type: 'slide',
+          rewind: true,
+          gap: '1rem',
+          pagination: false,
+          fixedWidth: 110,
+          fixedHeight: 70,
+          cover: true,
+          focus: 'center',
+          isNavigation: true,
+          updateOnMove: true,
+        },
+        count : 0,
       }
     },
-    methods: {
-      countDownChanged(dismissCountDown) {
-        this.dismissCountDown = dismissCountDown
+    computed: {
+      slides() {
+        return createSlides()
       },
-      showAlert() {
-        this.dismissCountDown = this.dismissSecs
-      }
+    },
+    mounted() {
+      this.$refs.primary.sync( this.$refs.secondary.splide );
     }
   }
 </script>
