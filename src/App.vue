@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navbar />
-    <router-view style="max-width: 1280px !important;" class="container mt-3" />
+    <router-view style="max-width: 1280px !important; background: #FFFDF7 !important;" class="container mt-3" />
   </div>
 </template>
 
