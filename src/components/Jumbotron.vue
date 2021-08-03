@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-jumbotron class="jumbo-image">
+    <b-jumbotron class="jumbo-image mb-3">
     </b-jumbotron>
     </div>
 </template>
@@ -14,5 +14,6 @@ export default {
 <style>
 .jumbo-image {
     background-image: url("../assets/1.jpg");
+    padding: 5rem 2rem !important;
 }
 </style>

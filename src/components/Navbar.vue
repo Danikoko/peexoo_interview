@@ -9,9 +9,9 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item href="#">Business Manager</b-nav-item>
-          <b-nav-item href="#">MarketPlace</b-nav-item>
-          <b-nav-item href="#">XooCam</b-nav-item>
+          <b-nav-item class="top-nav-item" href="#">Business Manager</b-nav-item>
+          <b-nav-item class="top-nav-item" href="#">MarketPlace</b-nav-item>
+          <b-nav-item class="top-nav-item" href="#">XooCam</b-nav-item>
 
           <b-nav-item-dropdown class="top-nav-collapse" text="Join Peexoo" right>
             <b-dropdown-item href="#">EN</b-dropdown-item>
@@ -30,6 +30,15 @@ export default {
 </script>
 
 <style>
+.tab-control .active {
+  padding: 0px 26px;
+  background: #f29f0526;
+  border-radius: 20px;
+  font-weight: bold;
+}
+.top-nav-item .nav-link {
+  color: #4d4d4d !important;
+}
 .navbar {
   background-color: #fff;
   box-shadow: 0 4px 2px -2px #00000017;
@@ -42,7 +51,7 @@ export default {
 <style scoped>
 @media only screen and (min-width: 768px) {
   .top-nav-collapse {
-    margin-left: 120px;
+    margin-left: 100px;
   }
 }
 </style>
